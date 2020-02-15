@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled'
+import Frase from './components/Frase'
 
 const Contenedor = styled.div`
   display: flex;
@@ -17,9 +18,22 @@ const Boton = styled.button`
   padding: 1rem 3rem;
   font-size: 2rem;
   border: 2px solid black;
+  transition: background-size .8s ease;
+  
+  :hover {
+    cursor:pointer;
+    background-size: 400px;
+  }
 `
 
 function App() {
+
+  const [frase, guardarFrase] = useState({})
+
+  //Carga una frase al inicio de la ejecucion automaticamente
+  useEffect(() => {
+    consultarAPI()
+  }, []); // [] para que lo cargue la primera vez
 
 /*  const consultarAPI = () => {
     // Ejemplo sin async y await  
@@ -34,17 +48,26 @@ function App() {
     //console.log('Consultando la API...');    
     const api = await fetch('https://breaking-bad-quotes.herokuapp.com/v1/quotes');
     const frase = await api.json();
-    console.log(frase[0]); //Solo me interesa la frase que retorna en el array[0]  
+
+    //console.log(frase[0]); //Solo me interesa la frase que retorna en el array[0]  
+    guardarFrase(frase[0]);
+
   }
 
 
   return (
     <Contenedor>
+      <Frase
+        frase={frase}
+      />
+
       <Boton
         //onClick={ () => consultarAPI() } // espera que el usuario de click
         //onClick={consultarAPI()} // no espera que el usuario de click, se ejecuta la funcion JS sin esperar el click
         onClick={consultarAPI} // espera que el usuario de click
-      >Breaking Bad</Boton>  
+      >
+        Obtener Frase
+      </Boton>  
     </Contenedor>    
   );
 }
